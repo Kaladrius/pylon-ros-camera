@@ -22,7 +22,26 @@ ENDIF(NOT CMAKE_BUILD_TYPE)
 
 if(CMAKE_BUILD_TYPE MATCHES Release)
    #message(" * Release Mode")
-   add_compile_options(-Wno-deprecated-declarations)
+
+   # Suppress all the compiler warnings
+   if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
+	add_compile_options(
+		-fcompare-debug-second    # Suppress "notes"
+		-Wno-deprecated-declarations
+		-Wno-deprecated-copy
+		-Wno-unused-but-set-variable
+		-Wno-unused-variable
+		-Wno-unknown-pragmas
+		-Wno-unused-parameter     # Suppress unused parameter warnings
+		-Wno-pedantic             # Suppress pedantic warnings about zero-size arrays
+		-Wno-unused-function      # Suppress unused function warnings
+		-Wno-unused-value         # Suppress write() return value warning
+		-Wno-sign-compare         # Suppress integer sign comparison warning
+		-Wno-ignored-qualifiers   # Suppress ignored const qualifier warning
+		-Wno-cast-function-type   # Suppress thread creation function cast warning
+	)
+endif()
+
 endif()
 
 if(CMAKE_BUILD_TYPE MATCHES RelWithDebInfo)
